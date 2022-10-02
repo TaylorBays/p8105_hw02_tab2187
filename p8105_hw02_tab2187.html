@@ -486,6 +486,13 @@ to obtain data frames with the required stations in rows).</p>
 ## 15 Euclid Av                     Fulton          
 ## 16 Franklin Av                   Fulton          
 ## 17 Howard Beach                  Rockaway</code></pre>
+<p>##Problem 2 Specifying the sheet in excel that needs to be read is
+Mr. Trash Wheel. Omitted rows with notes, figures, and columns
+containing notes as well as columns that did not include dumpster
+specific data.</p>
+<pre class="r"><code>Mr_Trash_Wheel=
+  readxl::read_excel(&quot;Trash_Wheel.xlsx&quot;, &quot;Mr. Trash Wheel&quot;, range = &quot;A2:N535&quot;) %&gt;% 
+  select(-Month, -Year, -Date)</code></pre>
 
 
 

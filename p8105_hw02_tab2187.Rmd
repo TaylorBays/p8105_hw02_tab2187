@@ -78,3 +78,12 @@ NYC_Subway %>%
   select(station_name, line) %>% 
   distinct
 ```
+
+##Problem 2
+Specifying the sheet in excel that needs to be read is Mr. Trash Wheel. Omitted rows with notes, figures, and columns containing notes as well as columns that did not include dumpster specific data.
+```{r}
+Mr_Trash_Wheel=
+  readxl::read_excel("Trash_Wheel.xlsx", "Mr. Trash Wheel", range = "A2:N535") %>% 
+  select(-Month, -Year, -Date)
+
+```
