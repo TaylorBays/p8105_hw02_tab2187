@@ -84,5 +84,5 @@ Specifying the sheet in excel that needs to be read is Mr. Trash Wheel. Omitted 
 ```{r}
 Mr_Trash_Wheel=
   readxl::read_excel("Trash_Wheel.xlsx", "Mr. Trash Wheel", range = "A2:N535") %>% 
-  select(-Month, -Year, -Date)
+  select(-Date)
 ```
