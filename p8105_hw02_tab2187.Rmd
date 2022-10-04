@@ -149,7 +149,7 @@ Unemployment =
   pivot_longer(
     jan:dec,
     names_to = "month", 
-    values_to = "rates")
+    values_to = "unemployment rates")
 ```
 
 Join the datasets by merging snp into pols, and merging unemployment into the result.
@@ -158,3 +158,4 @@ Write a short paragraph about these datasets. Explain briefly what each dataset 
 ```{r}
 
 ```
+
