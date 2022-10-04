@@ -489,10 +489,43 @@ to obtain data frames with the required stations in rows).</p>
 <p>##Problem 2 Specifying the sheet in excel that needs to be read is
 Mr. Trash Wheel. Omitted rows with notes, figures, and columns
 containing notes as well as columns that did not include dumpster
-specific data.</p>
+specific data. Sports Balls data is now rounded using as.integer</p>
 <pre class="r"><code>Mr_Trash_Wheel=
   readxl::read_excel(&quot;Trash_Wheel.xlsx&quot;, &quot;Mr. Trash Wheel&quot;, range = &quot;A2:N535&quot;) %&gt;% 
-  select(-Date)</code></pre>
+  janitor::clean_names() %&gt;% 
+  na.omit() %&gt;% 
+  mutate(sports_balls = as.integer(round(sports_balls))) %&gt;% 
+  select(-date)</code></pre>
+<p>Specifying the sheet in excel that needs to be read is Professor
+Trash Wheel. Omitted rows with notes, figures, and columns containing
+notes as well as columns that did not include dumpster specific
+data.</p>
+<pre class="r"><code>Professor_Trash_Wheel=
+  readxl::read_excel(&quot;Trash_Wheel.xlsx&quot;, &quot;Professor Trash Wheel&quot;, range = &quot;A2:M97&quot;) %&gt;% 
+  janitor::clean_names() %&gt;% 
+  na.omit() %&gt;% 
+  select(-date)</code></pre>
+<p>Merging the data sets Mr_Trash_Wheel and Professor_Trash_Wheel. When
+we first merge the data we cannot tell which data belongs to which data
+set. So we merge them with the id pathway. Once we merge them we see
+that 1 under the which_trash_wheel is Mr.Trash Wheel and 2 under the
+which_trash_wheel is Professor Trash Wheel.</p>
+<pre class="r"><code>Mr_Trash_Wheel$dumpster = as.double(Mr_Trash_Wheel$dumpster)
+Mr_Trash_Wheel$year = as.double(Mr_Trash_Wheel$year)
+
+TrashWheel_combined = 
+  bind_rows(Mr_Trash_Wheel, Professor_Trash_Wheel, .id=&quot;which_trash_wheel&quot;)</code></pre>
+<p>The total weight of trash collected by Professor Trash Wheel=
+<code>r</code> sum(professor_trash_wheel$weight)</p>
+<p>The total number of sports balls collected by Mr. Trash Wheel in
+2020= <code>r</code> sum</p>
+<p>##Problem 3</p>
+<pre class="r"><code>Poll=
+  read_csv(&quot;pols-month.csv&quot;) %&gt;% 
+  janitor::clean_names() %&gt;% 
+   separate(mon, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;)) %&gt;% 
+  mutate(year = as.integer(year), month = as.integer(month), day = as.integer(day)) %&gt;% 
+  mutate(month = month.name[month])</code></pre>
 
 
 
