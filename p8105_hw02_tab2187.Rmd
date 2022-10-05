@@ -151,7 +151,7 @@ First, clean the data in pols-month.csv. Use separate() to break up the variable
   mutate(month = month.name[as.integer(month)]) %>% 
   mutate(prez_dem = recode(prez_dem, '1' = 'dem', '0' = 'gop')) %>% 
 mutate(prez_gop = recode(prez_gop, '1' = 'gop', '0' = 'dem', '2' = 'unexpected'))
-select(Poll, -day)
+select(Poll, year, month, prez_gop, gov_gop, sen_gop, rep_gop, prez_dem, gov_dem, sen_dem, rep_dem)
 
 ```
 Second, clean the data in snp.csv using a similar process to the above. For consistency across datasets, arrange according to year and month, and organize so that year and month are the leading columns.
@@ -163,7 +163,7 @@ SNP=
    separate(date, into = c("month", "day", "year")) %>% 
   mutate(year = as.numeric(year), month = as.integer(month), day = as.integer(day)) %>% 
   mutate(month = month.name[month]) %>% 
-  select(year, month, day, close)
+  select(year, month, close)
 ```
 
 Third, tidy the unemployment data so that it can be merged with the previous datasets. This process will involve switching from “wide” to “long” format; ensuring that key variables have the same name; and ensuring that key variables take the same values.
@@ -182,7 +182,14 @@ Join the datasets by merging snp into pols, and merging unemployment into the re
 Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
 
 ```{r}
+Poll_Merged_SNP=
+  left_join(Poll, SNP, by = c("year", "month"))
+Poll_Merged_SNP
+```
 
+```{r}
+Unemployment_Merged_PollSNP=
+  left_join(Poll_Merged_SNP, Unemployment, by = c("year", "month"))
 ```
 
 Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).

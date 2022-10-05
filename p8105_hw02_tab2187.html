@@ -560,15 +560,15 @@ the day variable.</p>
   mutate(month = month.name[as.integer(month)]) %&gt;% 
   mutate(prez_dem = recode(prez_dem, &#39;1&#39; = &#39;dem&#39;, &#39;0&#39; = &#39;gop&#39;)) %&gt;% 
 mutate(prez_gop = recode(prez_gop, &#39;1&#39; = &#39;gop&#39;, &#39;0&#39; = &#39;dem&#39;, &#39;2&#39; = &#39;unexpected&#39;))
-select(Poll, -day)</code></pre>
+select(Poll, year, month, prez_gop, gov_gop, sen_gop, rep_gop, prez_dem, gov_dem, sen_dem, rep_dem)</code></pre>
 <pre><code>## # A tibble: 822 × 10
-##   month     year prez_…¹ gov_gop sen_gop rep_gop prez_…² gov_dem sen_dem rep_dem
-##   &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
-## 1 January   1947 dem          23      51     253 dem          23      45     198
-## 2 February  1947 dem          23      51     253 dem          23      45     198
-## 3 March     1947 dem          23      51     253 dem          23      45     198
-## 4 April     1947 dem          23      51     253 dem          23      45     198
-## 5 May       1947 dem          23      51     253 dem          23      45     198
+##    year month    prez_…¹ gov_gop sen_gop rep_gop prez_…² gov_dem sen_dem rep_dem
+##   &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1  1947 January  dem          23      51     253 dem          23      45     198
+## 2  1947 February dem          23      51     253 dem          23      45     198
+## 3  1947 March    dem          23      51     253 dem          23      45     198
+## 4  1947 April    dem          23      51     253 dem          23      45     198
+## 5  1947 May      dem          23      51     253 dem          23      45     198
 ## # … with 817 more rows, and abbreviated variable names ¹​prez_gop, ²​prez_dem</code></pre>
 <p>Second, clean the data in snp.csv using a similar process to the
 above. For consistency across datasets, arrange according to year and
@@ -579,7 +579,7 @@ month, and organize so that year and month are the leading columns.</p>
    separate(date, into = c(&quot;month&quot;, &quot;day&quot;, &quot;year&quot;)) %&gt;% 
   mutate(year = as.numeric(year), month = as.integer(month), day = as.integer(day)) %&gt;% 
   mutate(month = month.name[month]) %&gt;% 
-  select(year, month, day, close)</code></pre>
+  select(year, month, close)</code></pre>
 <p>Third, tidy the unemployment data so that it can be merged with the
 previous datasets. This process will involve switching from “wide” to
 “long” format; ensuring that key variables have the same name; and
@@ -596,6 +596,20 @@ into the result. Write a short paragraph about these datasets. Explain
 briefly what each dataset contained, and describe the resulting dataset
 (e.g. give the dimension, range of years, and names of key
 variables).</p>
+<pre class="r"><code>Poll_Merged_SNP=
+  left_join(Poll, SNP, by = c(&quot;year&quot;, &quot;month&quot;))
+Poll_Merged_SNP</code></pre>
+<pre><code>## # A tibble: 822 × 12
+##   month      day  year prez_gop gov_gop sen_gop rep_gop prez_dem gov_dem sen_dem
+##   &lt;chr&gt;    &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;
+## 1 January     15  1947 dem           23      51     253 dem           23      45
+## 2 February    15  1947 dem           23      51     253 dem           23      45
+## 3 March       15  1947 dem           23      51     253 dem           23      45
+## 4 April       15  1947 dem           23      51     253 dem           23      45
+## 5 May         15  1947 dem           23      51     253 dem           23      45
+## # … with 817 more rows, and 2 more variables: rep_dem &lt;dbl&gt;, close &lt;dbl&gt;</code></pre>
+<pre class="r"><code>Unemployment_Merged_PollSNP=
+  left_join(Poll_Merged_SNP, Unemployment, by = c(&quot;year&quot;, &quot;month&quot;))</code></pre>
 <p>Write a short paragraph about these datasets. Explain briefly what
 each dataset contained, and describe the resulting dataset (e.g. give
 the dimension, range of years, and names of key variables).</p>
