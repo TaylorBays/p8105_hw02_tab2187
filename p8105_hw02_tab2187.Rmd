@@ -143,13 +143,15 @@ In-line R code: `r sum(Mr_Trash_Wheel$sports_balls[])`
 ##Problem 3
 First, clean the data in pols-month.csv. Use separate() to break up the variable mon into integer variables year, month, and day; replace month number with month name; create a president variable taking values gop and dem, and remove prez_dem and prez_gop; and remove the day variable.
 ```{r}
- read_csv("pols-month.csv") %>% 
+ Poll=
+  read_csv("pols-month.csv") %>% 
   janitor::clean_names() %>% 
-   separate(mon, into = c("year", "month", "day")) %>% 
+   separate(mon, into = c("month", "day", "year")) %>% 
   mutate(year = as.integer(year), month = as.integer(month), day = as.integer(day)) %>% 
-  mutate(month = month.name[as.numeric(month)]) %>% 
-  mutate(prez_dem = recode(prez_dem, '1' = 'dem', '0' = 'gop',)) %>% 
+  mutate(month = month.name[as.integer(month)]) %>% 
+  mutate(prez_dem = recode(prez_dem, '1' = 'dem', '0' = 'gop')) %>% 
 mutate(prez_gop = recode(prez_gop, '1' = 'gop', '0' = 'dem', '2' = 'unexpected'))
+select(Poll, -day)
 
 ```
 Second, clean the data in snp.csv using a similar process to the above. For consistency across datasets, arrange according to year and month, and organize so that year and month are the leading columns.

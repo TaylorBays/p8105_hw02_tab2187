@@ -552,22 +552,24 @@ to break up the variable mon into integer variables year, month, and
 day; replace month number with month name; create a president variable
 taking values gop and dem, and remove prez_dem and prez_gop; and remove
 the day variable.</p>
-<pre class="r"><code> read_csv(&quot;pols-month.csv&quot;) %&gt;% 
+<pre class="r"><code> Poll=
+  read_csv(&quot;pols-month.csv&quot;) %&gt;% 
   janitor::clean_names() %&gt;% 
-   separate(mon, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;)) %&gt;% 
+   separate(mon, into = c(&quot;month&quot;, &quot;day&quot;, &quot;year&quot;)) %&gt;% 
   mutate(year = as.integer(year), month = as.integer(month), day = as.integer(day)) %&gt;% 
-  mutate(month = month.name[as.numeric(month)]) %&gt;% 
-  mutate(prez_dem = recode(prez_dem, &#39;1&#39; = &#39;dem&#39;, &#39;0&#39; = &#39;gop&#39;,)) %&gt;% 
-mutate(prez_gop = recode(prez_gop, &#39;1&#39; = &#39;gop&#39;, &#39;0&#39; = &#39;dem&#39;, &#39;2&#39; = &#39;unexpected&#39;))</code></pre>
-<pre><code>## # A tibble: 822 × 11
-##    year month   day prez_gop gov_gop sen_gop rep_gop prez_dem gov_dem sen_dem
-##   &lt;int&gt; &lt;chr&gt; &lt;int&gt; &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;      &lt;dbl&gt;   &lt;dbl&gt;
-## 1     1 &lt;NA&gt;   1947 dem           23      51     253 dem           23      45
-## 2     2 &lt;NA&gt;   1947 dem           23      51     253 dem           23      45
-## 3     3 &lt;NA&gt;   1947 dem           23      51     253 dem           23      45
-## 4     4 &lt;NA&gt;   1947 dem           23      51     253 dem           23      45
-## 5     5 &lt;NA&gt;   1947 dem           23      51     253 dem           23      45
-## # … with 817 more rows, and 1 more variable: rep_dem &lt;dbl&gt;</code></pre>
+  mutate(month = month.name[as.integer(month)]) %&gt;% 
+  mutate(prez_dem = recode(prez_dem, &#39;1&#39; = &#39;dem&#39;, &#39;0&#39; = &#39;gop&#39;)) %&gt;% 
+mutate(prez_gop = recode(prez_gop, &#39;1&#39; = &#39;gop&#39;, &#39;0&#39; = &#39;dem&#39;, &#39;2&#39; = &#39;unexpected&#39;))
+select(Poll, -day)</code></pre>
+<pre><code>## # A tibble: 822 × 10
+##   month     year prez_…¹ gov_gop sen_gop rep_gop prez_…² gov_dem sen_dem rep_dem
+##   &lt;chr&gt;    &lt;int&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1 January   1947 dem          23      51     253 dem          23      45     198
+## 2 February  1947 dem          23      51     253 dem          23      45     198
+## 3 March     1947 dem          23      51     253 dem          23      45     198
+## 4 April     1947 dem          23      51     253 dem          23      45     198
+## 5 May       1947 dem          23      51     253 dem          23      45     198
+## # … with 817 more rows, and abbreviated variable names ¹​prez_gop, ²​prez_dem</code></pre>
 <p>Second, clean the data in snp.csv using a similar process to the
 above. For consistency across datasets, arrange according to year and
 month, and organize so that year and month are the leading columns.</p>
