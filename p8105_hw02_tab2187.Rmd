@@ -111,12 +111,12 @@ TrashWheel_combined =
   bind_rows(Mr_Trash_Wheel, Professor_Trash_Wheel, .id="which_trash_wheel")
 ```
 
-
+##Inline R Code for Problem 2
 The total weight of trash collected by Professor Trash Wheel= 
-`r` sum(professor_trash_wheel$weight)
+`r sum(Professor_Trash_Wheel$weight_tons)`
 
 The total number of sports balls collected by Mr. Trash Wheel in 2020=
-`r` sum
+`r sum(Mr_Trash_Wheel$sports_balls)`
 
 ##Problem 3
 First, clean the data in pols-month.csv. Use separate() to break up the variable mon into integer variables year, month, and day; replace month number with month name; create a president variable taking values gop and dem, and remove prez_dem and prez_gop; and remove the day variable.
@@ -126,7 +126,13 @@ Poll=
   janitor::clean_names() %>% 
    separate(mon, into = c("year", "month", "day")) %>% 
   mutate(year = as.integer(year), month = as.integer(month), day = as.integer(day)) %>% 
-  mutate(month = month.name[month]) %>% 
+  mutate(month = month.name[as.numeric(month)]) %>% 
+  mutate(prez_dem = recode(prez_dem, `1` = "dem", `0` = "gop",))
+  mutate(prez_gop = recode(prez_gop, `1` = "gop", `0` = "dem", `2` = "unexpected"))  
+pivot_longer(
+  cols = start_with("prez"),
+  names_to = NULL,
+  values_to = "president") %>%
 select(-day)
 ```
 Second, clean the data in snp.csv using a similar process to the above. For consistency across datasets, arrange according to year and month, and organize so that year and month are the leading columns.
@@ -136,7 +142,7 @@ SNP=
   read_csv("snp.csv") %>% 
   janitor::clean_names() %>% 
    separate(date, into = c("year", "month", "day")) %>% 
-  mutate(year = as.integer(year), month = as.integer(month), day = as.integer(day)) %>% 
+  mutate(year = as.numeric(year), month = as.integer(month), day = as.integer(day)) %>% 
   mutate(month = month.name[month])
 ```
 
@@ -147,12 +153,18 @@ Unemployment =
   read_csv("unemployment.csv") %>% 
   janitor::clean_names() %>%
   pivot_longer(
-    jan:dec,
+    january:december,
     names_to = "month", 
     values_to = "unemployment rates")
 ```
 
 Join the datasets by merging snp into pols, and merging unemployment into the result.
+Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
+
+```{r}
+
+```
+
 Write a short paragraph about these datasets. Explain briefly what each dataset contained, and describe the resulting dataset (e.g. give the dimension, range of years, and names of key variables).
 
 ```{r}
