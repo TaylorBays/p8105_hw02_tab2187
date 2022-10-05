@@ -112,28 +112,38 @@ TrashWheel_combined =
 ```
 
 ##Inline R Code for Problem 2
+The number of observation in the combined Mr_Trash_Wheel and Professor Trash Wheel data set is 568. 
+
 The total weight of trash collected by Professor Trash Wheel= 
 `r sum(Professor_Trash_Wheel$weight_tons)`
 
-The total number of sports balls collected by Mr. Trash Wheel in 2020=
-`r sum(Mr_Trash_Wheel$sports_balls)`
+The total number of sports balls collected by Mr. Trash Wheel in 2020= 856
+```{r}
+ library(dplyr)
+Mr_Trash_Wheel %>%
+  group_by(year) %>%
+  mutate(sum_by_group = sum(sports_balls))
+```
+
+After asking a question in the discussion board the TA gave me a hint to use library dyplr to solve for just specific years. I grouped the data by years and then summed the total of sports balls for each year. The total sum was 856 for the year 2020. I can verify that I am correct by using the inline r code below and getting the total sports balls collected and then adding up the values of sports balls for each year to verify that I am correct. I am. 
+
+Proof of work
+2014- 266
+2015- 1238
+2016- 1309
+2017- 530
+2018- 448
+2019- 662
+2020- 856
+2021- 564
+Total- 5873
+In-line R code: `r sum(Mr_Trash_Wheel$sports_balls[])`
+
 
 ##Problem 3
 First, clean the data in pols-month.csv. Use separate() to break up the variable mon into integer variables year, month, and day; replace month number with month name; create a president variable taking values gop and dem, and remove prez_dem and prez_gop; and remove the day variable.
 ```{r}
-Poll=
-  read_csv("pols-month.csv") %>% 
-  janitor::clean_names() %>% 
-   separate(mon, into = c("year", "month", "day")) %>% 
-  mutate(year = as.integer(year), month = as.integer(month), day = as.integer(day)) %>% 
-  mutate(month = month.name[as.numeric(month)]) %>% 
-  mutate(prez_dem = recode(prez_dem, `1` = "dem", `0` = "gop",))
-  mutate(prez_gop = recode(prez_gop, `1` = "gop", `0` = "dem", `2` = "unexpected"))  
-pivot_longer(
-  cols = start_with("prez"),
-  names_to = NULL,
-  values_to = "president") %>%
-select(-day)
+
 ```
 Second, clean the data in snp.csv using a similar process to the above. For consistency across datasets, arrange according to year and month, and organize so that year and month are the leading columns.
 

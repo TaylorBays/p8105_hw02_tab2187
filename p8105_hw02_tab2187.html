@@ -515,22 +515,43 @@ Mr_Trash_Wheel$year = as.double(Mr_Trash_Wheel$year)
 
 TrashWheel_combined = 
   bind_rows(Mr_Trash_Wheel, Professor_Trash_Wheel, .id=&quot;which_trash_wheel&quot;)</code></pre>
+<p>##Inline R Code for Problem 2 The number of observation in the
+combined Mr_Trash_Wheel and Professor Trash Wheel data set is 568.</p>
 <p>The total weight of trash collected by Professor Trash Wheel=
-<code>r</code> sum(professor_trash_wheel$weight)</p>
+162.54</p>
 <p>The total number of sports balls collected by Mr. Trash Wheel in
-2020= <code>r</code> sum</p>
+2020= 856</p>
+<pre class="r"><code> library(dplyr)
+Mr_Trash_Wheel %&gt;%
+  group_by(year) %&gt;%
+  mutate(sum_by_group = sum(sports_balls))</code></pre>
+<pre><code>## # A tibble: 486 × 14
+## # Groups:   year [8]
+##   dumpster month  year weight_…¹ volum…² plast…³ polys…⁴ cigar…⁵ glass…⁶ groce…⁷
+##      &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+## 1        1 May    2014      4.31      18    1450    1820  126000      72     584
+## 2        2 May    2014      2.74      13    1120    1030   91000      42     496
+## 3        3 May    2014      3.45      15    2450    3100  105000      50    1080
+## 4        4 May    2014      3.1       15    2380    2730  100000      52     896
+## 5        5 May    2014      4.06      18     980     870  120000      72     368
+## # … with 481 more rows, 4 more variables: chip_bags &lt;dbl&gt;, sports_balls &lt;int&gt;,
+## #   homes_powered &lt;dbl&gt;, sum_by_group &lt;int&gt;, and abbreviated variable names
+## #   ¹​weight_tons, ²​volume_cubic_yards, ³​plastic_bottles, ⁴​polystyrene,
+## #   ⁵​cigarette_butts, ⁶​glass_bottles, ⁷​grocery_bags</code></pre>
+<p>After asking a question in the discussion board the TA gave me a hint
+to use library dyplr to solve for just specific years. I grouped the
+data by years and then summed the total of sports balls for each year.
+The total sum was 856 for the year 2020. I can verify that I am correct
+by using the inline r code below and getting the total sports balls
+collected and then adding up the values of sports balls for each year to
+verify that I am correct. I am.</p>
+<p>Proof of work 2014- 266 2015- 1238 2016- 1309 2017- 530 2018- 448
+2019- 662 2020- 856 2021- 564 Total- 5873 In-line R code: 5873</p>
 <p>##Problem 3 First, clean the data in pols-month.csv. Use separate()
 to break up the variable mon into integer variables year, month, and
 day; replace month number with month name; create a president variable
 taking values gop and dem, and remove prez_dem and prez_gop; and remove
 the day variable.</p>
-<pre class="r"><code>Poll=
-  read_csv(&quot;pols-month.csv&quot;) %&gt;% 
-  janitor::clean_names() %&gt;% 
-   separate(mon, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;)) %&gt;% 
-  mutate(year = as.integer(year), month = as.integer(month), day = as.integer(day)) %&gt;% 
-  mutate(month = month.name[month]) %&gt;% 
-select(-day)</code></pre>
 <p>Second, clean the data in snp.csv using a similar process to the
 above. For consistency across datasets, arrange according to year and
 month, and organize so that year and month are the leading columns.</p>
@@ -538,7 +559,7 @@ month, and organize so that year and month are the leading columns.</p>
   read_csv(&quot;snp.csv&quot;) %&gt;% 
   janitor::clean_names() %&gt;% 
    separate(date, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;)) %&gt;% 
-  mutate(year = as.integer(year), month = as.integer(month), day = as.integer(day)) %&gt;% 
+  mutate(year = as.numeric(year), month = as.integer(month), day = as.integer(day)) %&gt;% 
   mutate(month = month.name[month])</code></pre>
 <p>Third, tidy the unemployment data so that it can be merged with the
 previous datasets. This process will involve switching from “wide” to
@@ -548,7 +569,7 @@ ensuring that key variables take the same values.</p>
   read_csv(&quot;unemployment.csv&quot;) %&gt;% 
   janitor::clean_names() %&gt;%
   pivot_longer(
-    jan:dec,
+    january:december,
     names_to = &quot;month&quot;, 
     values_to = &quot;unemployment rates&quot;)</code></pre>
 <p>Join the datasets by merging snp into pols, and merging unemployment
@@ -556,6 +577,9 @@ into the result. Write a short paragraph about these datasets. Explain
 briefly what each dataset contained, and describe the resulting dataset
 (e.g. give the dimension, range of years, and names of key
 variables).</p>
+<p>Write a short paragraph about these datasets. Explain briefly what
+each dataset contained, and describe the resulting dataset (e.g. give
+the dimension, range of years, and names of key variables).</p>
 
 
 
