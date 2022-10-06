@@ -192,4 +192,4 @@ Unemployment_Merged_PollSNP=
   left_join(Poll_Merged_SNP, Unemployment, by = c("year", "month"))
 ```
 
-The Poll data set had a range of years that spanned to 1947-2015. It contained information about whether the house of representatives, senate, governor, and president were GOP or Democrats. The unemployment spreadsheet gives us a look at the unemployment rates for each month for given years. The given years were 1948-2015. The SNP data looks close price of the stock index from years 1950-2015.Key variable names were the closing prices.
+The Poll data set had a range of years that spanned to 1947-2015. It contained information about whether the house of representatives, senate, governor, and president were GOP or Democrats. The unemployment spreadsheet gives us a look at the unemployment rates for each month for given years. The given years were 1948-2015. The SNP data looks close price of the stock index from years 1950-2015. Key variable names were the closing prices.
